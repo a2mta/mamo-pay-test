@@ -1,7 +1,7 @@
-import { useSearchParams } from 'react-router-dom';
-import { usePaymentLink } from './hooks/usePaymentLink';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { usePaymentLink } from '../hooks/usePaymentLink';
 import { FC, SyntheticEvent, useCallback, useMemo, useState } from 'react';
-import Button from './components/Button';
+import Button from '../components/Button';
 
 const ResetSection: FC<{ onClick: () => void; text: string }> = ({
   onClick,
@@ -14,6 +14,7 @@ const ResetSection: FC<{ onClick: () => void; text: string }> = ({
 );
 
 const Payments = () => {
+  const navigator = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [formError, setFormError] = useState<string | undefined>();
   const [form, setFormData] = useState({
@@ -30,17 +31,14 @@ const Payments = () => {
 
   const handleClick = useCallback(() => {
     //propper form checking should be done via formik or some other lib
-    let gotErrors = false;
     for (const element of Object.values(form)) {
+      console.info(element);
       if (element === '') {
-        gotErrors = true;
+        setFormError('Please, fill the form');
+        return;
       }
     }
-    if (gotErrors) {
-      setFormError('Please, fill the form');
-    } else {
-      generateLink(form);
-    }
+    generateLink(form);
   }, [form]);
 
   const handleFormChange = (e: SyntheticEvent<HTMLInputElement>) => {
@@ -76,9 +74,6 @@ const Payments = () => {
       default:
         return (
           <div className='flex flex-col space-y-3 mb-5'>
-            <span>
-              <h1>Test payment link</h1>
-            </span>
             {formError && <span className='text-red-400'>{formError}</span>}
             <span className='flex flex-col'>
               <label htmlFor='name'>First Name</label>
@@ -122,18 +117,25 @@ const Payments = () => {
           </div>
         );
     }
-  }, [paymentStatus, form.firstName, handleFormChange, isLoading]);
+  }, [paymentStatus, formError, form, isLoading]);
+
+  const handleRouteChange = () => {
+    navigator('/expenses');
+  };
 
   return (
     <>
       <main className='flex h-full w-full items-center justify-center flex-col'>
+        <span className='mb-5'>
+          <Button onClick={handleRouteChange}>go to expenses page</Button>
+        </span>
         {content}
         {paymentLink && (
           <iframe
             src={paymentLink}
             width='400px'
-            title='paymeny portal'
-            height='400px'
+            title='payment portal'
+            height='600px'
           />
         )}
       </main>

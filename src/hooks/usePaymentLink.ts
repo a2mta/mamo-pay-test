@@ -10,6 +10,14 @@ type UsePaymentLinkParams = {
   lastName: string;
 };
 
+/**
+ * custom hook repsonsible for generating payment link
+ * @param {string} email
+ * @param {number} amount
+ * @param {string} firstName
+ * @param {string} lastName
+ * @public
+ */
 export const usePaymentLink = () => {
   const [isLoading, toggleLoading] = useState(false);
   const [paymentLink, setPaymentLink] = useState('');

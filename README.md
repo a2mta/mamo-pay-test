@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+## Important: disable CORS checking in your browser to make API to work
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -1,6 +1,6 @@
 import { getExpenses } from '../api/expenses';
 import { useEffect, useState } from 'react';
-import { Expens, ExpensPagination } from '../types';
+import { Expense, ExpensePagination } from '../types';
 
 type UseExpensesParams = {
   keepPrevious?: boolean;
@@ -23,9 +23,9 @@ export const useExpenses = ({
 }: UseExpensesParams) => {
   const [isLoading, setIsLoading] = useState(false);
   const [pagingParams, setPagingParams] = useState<
-    ExpensPagination | undefined
+    ExpensePagination | undefined
   >();
-  const [data, setData] = useState<Expens[]>([]);
+  const [data, setData] = useState<Expense[]>([]);
 
   useEffect(() => {
     if (
@@ -38,7 +38,7 @@ export const useExpenses = ({
     if (!pagingParams || page <= pagingParams.totalPages) {
       setIsLoading(true);
       getExpenses(page, limit).then((res) => {
-        setPagingParams(res?.data.pagination as ExpensPagination);
+        setPagingParams(res?.data.pagination as ExpensePagination);
         setData((prev) =>
           keepPrevious
             ? res?.data.expenses || []

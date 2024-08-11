@@ -2,10 +2,12 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import ExpensItem from '../components/ExpensItem';
 import { useExpenses } from '../hooks/useExpenses';
 import PageCounterList from '../components/PageCounterList';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import PageSizeSelect from '../components/PageSizeSelect';
+import Button from '../components/Button';
 
 const Expensess = () => {
+  const navigator = useNavigate();
   const [isPaginatedMode, toggleMode] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const pageNumberGetParam = +(searchParams.get('page') || 1);
@@ -67,25 +69,18 @@ const Expensess = () => {
     setPage(pageIndex);
   };
 
-  const handleClick = () => {
-    fetch('https://sandbox.dev.business.mamopay.com/manage_api/v1/charges', {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        Authorization: `Bearer ${process.env.REACT_APP_MAMO_PAY_API_KEY}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
+  const handleRouteChange = () => {
+    navigator('/');
   };
 
   return (
-    <div className='flex items-center justify-center w-full h-full'>
-      <span onClick={handleClick}>ASS</span>
+    <div className='flex items-center justify-center w-full h-full flex-col'>
+      <span className='mb-5'>
+        <Button onClick={handleRouteChange}>go to main page</Button>
+      </span>
       <div
-        className={`flex flex-col h-full max-h-[300px]  w-[450px] ${
+        //NOTE: Classnames should be handled properly via classname lib or something similar
+        className={`flex flex-col h-full max-h-[300px] relative  w-[450px] ${
           isLoading ? 'cursor-wait' : ''
         }`}
       >
@@ -105,16 +100,24 @@ const Expensess = () => {
           </div>
           <PageSizeSelect />
         </div>
-        <div className='flex flex-col overflow-y-auto mb-5 h-full w-full space-y-5'>
-          {data?.map((item, index) => (
-            <span
-              key={item.id + index}
-              ref={index === data.length - 1 ? lastItemRef : null}
-            >
-              <ExpensItem {...item} />
-            </span>
-          ))}
-        </div>
+        {isLoading && (
+          <div className='flex h-full absolute w-full top-0 left-0 justify-center items-center bg-slate-300 opacity-60'>
+            Loading...
+          </div>
+        )}
+        {data && (
+          <div className='flex flex-col overflow-y-auto mb-5 h-full w-full space-y-5'>
+            {data.map((item, index) => (
+              <span
+                key={item.id + index}
+                ref={index === data.length - 1 ? lastItemRef : null}
+              >
+                <ExpensItem {...item} />
+              </span>
+            ))}
+          </div>
+        )}
+
         {isPaginatedMode && (
           <PageCounterList
             currentPage={currentPage}

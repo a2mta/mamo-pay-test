@@ -12,6 +12,7 @@ const PageSizeSelect = () => {
       return params;
     });
   };
+  
   return (
     <div className='flex space-x-5'>
       <label htmlFor='page-size'>Page size:</label>

@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, FC } from 'react';
 
-//NOTE: Classnames should be handled properly via classname package or something similar
+//NOTE: Classnames should be handled properly via classname lib or something similar
 
 const Button: FC<
   ButtonHTMLAttributes<HTMLButtonElement> & { busy?: boolean }

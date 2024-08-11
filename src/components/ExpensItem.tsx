@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
-import { Expens } from '../types';
+import { FC } from 'react';
+import { Expense } from '../types';
 
-const ExpensItem: FC<Expens> = ({ amount, date, currency, id }) => {
+const ExpensItem: FC<Expense> = ({ amount, date, currency, id }) => {
   return (
     <div className='flex flex-col'>
-      <span>Expens: {id}</span>
+      <span>Expense: {id}</span>
       <span>Date: {date}</span>
       <span>Amount: {amount}</span>
       <span>Currency: {currency}</span>

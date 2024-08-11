@@ -1,4 +1,4 @@
-export type Expens = {
+export type Expense = {
   id: string;
   date: string;
   category: string;
@@ -10,7 +10,7 @@ export type Expens = {
   receiptAttached: boolean;
 };
 
-export type ExpensPagination = {
+export type ExpensePagination = {
   currentPage: string;
   totalPages: number;
   totalItems: number;
@@ -21,23 +21,23 @@ export type ExpensPagination = {
 
 //ideally it should be a generic which will be able to acept any kind of request type
 export type ExpensesRequest = {
-  expenses: Expens[];
-  pagination: ExpensPagination;
+  expenses: Expense[];
+  pagination: ExpensePagination;
 };
 
 //payment API
 
-interface Customdata {}
+type Customdata = {};
 
-interface Prefilledcustomer {
+type Prefilledcustomer = {
   email: string;
-}
+};
 
-interface Rules {
+type Rules = {
   allowed: any[];
-}
+};
 
-export interface CreatePaymentLinkResponse {
+export type CreatePaymentLinkResponse = {
   description: string;
   capacity?: any;
   active: boolean;
@@ -70,6 +70,6 @@ export interface CreatePaymentLinkResponse {
   save_card: string;
   subscription?: any;
   payouts_share?: any;
-}
+};
 
 //
